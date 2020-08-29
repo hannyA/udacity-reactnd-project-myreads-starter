@@ -53,9 +53,13 @@ class BooksApp extends React.Component {
   updateQuery = (query) => {
 
     console.log("current correct query: ", query )
-
+ 	
+    if (query.length === 1) {
+	  query = query.trim()
+    }
+    
   	this.setState(() => ({
-      query: query.trim()
+      query: query
     }))
     
     if (query.length === 0) {
@@ -69,18 +73,25 @@ class BooksApp extends React.Component {
 
       BooksAPI.search(query)
       .then((searchResults) => {
-        console.log("current searchResults: ", searchResults )
-        console.log("current aba query: ", query )
-        console.log("current aba this.state.query: ", this.state.query )
 
         if (this.state.query === query) {
           if (Array.isArray(searchResults)) {
             console.log("searchResults is array " )
 			
-            this.setState(() => ({
-                searchResults: searchResults.filter((book) => {
-                  return book.hasOwnProperty('imageLinks') && book['imageLinks'].hasOwnProperty('thumbnail')
+            const filteredBooks = searchResults.filter((book) => (
+                	book.hasOwnProperty('imageLinks') && book['imageLinks'].hasOwnProperty('thumbnail')
+            	)).map((resultBook) => {
+	              const ownedBook = this.state.books.filter((book) => book.id === resultBook.id)
+            	  if (ownedBook.length > 0) {
+                  	resultBook.shelf = ownedBook[0].shelf
+                  }
+                  return resultBook
             	})
+            
+            
+            
+            this.setState(() => ({
+                searchResults: filteredBooks
             }))  
 
           } else { // Results is object with error message
@@ -126,10 +137,8 @@ class BooksApp extends React.Component {
        		  </Link>
       
               <div className="search-books-input-wrapper"> 
-      
-      {JSON.stringify(this.state.query)}
-      
-<input 
+            
+				<input 
       			  type="text" 
       			  placeholder="Search by title or author"
       			  value={this.state.query}
