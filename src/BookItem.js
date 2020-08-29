@@ -7,32 +7,33 @@ class BookItem extends Component {
   
 
   constructor(props) {
+  console.log('Book item constructor protops:', props)
+
   	super(props)
     this.state = {
       book: this.props.book
-    }   
+    }
   }
  
-  {//TODO: Replace this in App.js
-  }
+  //TODO: Replace this in App.js
+  
   updateShelf = (shelf) => {
-    console.log(shelf)
-    this.setState((oldBook) => {
-		const a = oldBook
-        a.shelf = shelf
-      	return {book: a }
-    })
+    console.log('Book item:', shelf)
+        console.log('Book item protops:',     this.props)
+
+    this.props.onMovedShelf(this.state.book, shelf)
   }
   
+
+
   render() {
         
-  const shelves = ['currentlyReading', 'wantToRead', 'read', 'none']
+  	const shelves = ['currentlyReading', 'wantToRead', 'read', 'none']
    
-  const optionsDict = {currentlyReading: 'Currently Reading',
+  	const shelvesDict = {currentlyReading: 'Currently Reading',
                        wantToRead: 'Want to Read', 
                        read: 'Read',
                        none: 'None'}
-
     return (
       <li key={this.state.book.id}>
         <div className="book">
@@ -44,8 +45,7 @@ class BookItem extends Component {
 
               <option value="move" disabled>Move to...</option>
               {shelves.map((shelf) => (
-                <option value={shelf}>{optionsDict[shelf]}</option>
-
+                <option value={shelf}>{shelvesDict[shelf]}</option>
               ))}
             </select>
 {//<OptionSelected key={this.state.book.shelf} shelfTitle={this.state.book.shelf} />

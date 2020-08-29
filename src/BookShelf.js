@@ -3,12 +3,13 @@ import BookItem from './BookItem'
 
 
 class BookShelf extends Component {
-	
-  
-  
+	  
   render() {
 
-    const {books, shelfName} = this.props
+    console.log('BookShelf constructor protops:', this.props)
+
+    const {books, shelfName } = this.props
+    console.log('Bookshelf is rendered:', shelfName)
     
     return (
       <div className="bookshelf">
@@ -16,15 +17,14 @@ class BookShelf extends Component {
         <div className="bookshelf-books">
           <ol className="books-grid">
 
+
             {books.map((book) => (
-              <BookItem book={book} key={book.id}/>
+              <BookItem book={book} key={book.id} onMovedShelf={this.props.onMovedShelf}/>
             ))}
 
           </ol>
         </div>
       </div>
-
-    
     )
   }
 }

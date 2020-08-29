@@ -21,6 +21,7 @@ class BooksApp extends React.Component {
 
 
   componentDidMount() {
+    console.log("Component Did mount")
     BooksAPI.getAll()
 	  .then((books) => {
     	this.setState(() => ({
@@ -29,16 +30,20 @@ class BooksApp extends React.Component {
       })
   }
   
-{//TODO: Add this as prop to BookShelf to get new shelf from BookItem 
+//TODO: Add this as prop to BookShelf to get new shelf from BookItem 
   // and then we can update the shelves and rerender them
-}
-  updateShelf = (shelf) => {
-    console.log(shelf)
-    this.setState((oldBook) => {
-		const a = oldBook
-        a.shelf = shelf
-      	return {book: a }
-    })
+
+  updateShelf = (movedBook, shelf) => {
+    console.log('Update shelf called')
+  	movedBook.shelf = shelf
+
+    this.setState((currentState) => ({      
+      books: [...currentState.books.filter((book) => book.id !== movedBook.id), movedBook]      
+    }))
+    
+    BooksAPI.update(movedBook, shelf)
+//    .then(() => ({}))
+ 
   }
   
 
@@ -55,6 +60,9 @@ class BooksApp extends React.Component {
     const readBooks = this.state.books.filter((book) => (
       book.shelf === 'read'
     ))
+
+    console.log('this.state.books: ', this.state.books)
+
 
     return (
       <div className="app">
@@ -94,9 +102,9 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>         
-         		<BookShelf books={currentBooks} shelfName='Currently Reading'/>
-         		<BookShelf books={wantBooks} shelfName='Want to Read'/>
-         		<BookShelf books={readBooks} shelfName='Read'/>
+         		<BookShelf books={currentBooks} shelfName='Currently Reading' onMovedShelf={this.updateShelf}/>
+         		<BookShelf books={wantBooks} shelfName='Want to Read' onMovedShelf={this.updateShelf}/>
+         		<BookShelf books={readBooks} shelfName='Read' onMovedShelf={this.updateShelf}/>
               </div>
             </div>
             <div className="open-search">
