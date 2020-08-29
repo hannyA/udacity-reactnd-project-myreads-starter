@@ -43,7 +43,7 @@ class BookItem extends Component {
 
               <option value="move" disabled>Move to...</option>
               {shelves.map((shelf) => (
-                <option value={shelf}>{shelvesDict[shelf]}</option>
+                <option key={shelf} value={shelf}>{shelvesDict[shelf]}</option>
               ))}
             </select>
 {//<OptionSelected key={this.state.book.shelf} shelfTitle={this.state.book.shelf} />

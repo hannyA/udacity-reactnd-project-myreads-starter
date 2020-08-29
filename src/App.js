@@ -5,6 +5,7 @@ import {Link, Route} from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import BookShelf from './BookShelf'
 import SearchResult from './search/SearchResult'
+import BookItem from './BookItem'
 
 class BooksApp extends React.Component {
   
@@ -84,12 +85,11 @@ class BooksApp extends React.Component {
 	              const ownedBook = this.state.books.filter((book) => book.id === resultBook.id)
             	  if (ownedBook.length > 0) {
                   	resultBook.shelf = ownedBook[0].shelf
+                  } else {
+                  	resultBook.shelf = 'none'
                   }
                   return resultBook
             	})
-            
-            
-            
             this.setState(() => ({
                 searchResults: filteredBooks
             }))  
@@ -101,7 +101,6 @@ class BooksApp extends React.Component {
                 searchResults: []
               }))   
           }   
-        
         }                  
       })
     }
@@ -123,7 +122,6 @@ class BooksApp extends React.Component {
     ))
 
     console.log('this.state.books: ', this.state.books)
-
 
     return (
       <div className="app">
@@ -150,7 +148,9 @@ class BooksApp extends React.Component {
             <div className="search-books-results">
               <ol className="books-grid">
 				{this.state.searchResults.map((book) => (
-				  <SearchResult key={book.id} book={book}/>
+				  
+              	  <BookItem key={book.id} book={book} onMovedShelf={this.updateShelf}/>
+
                 ))}
 			  </ol>
             </div>
