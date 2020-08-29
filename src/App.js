@@ -23,12 +23,22 @@ class BooksApp extends React.Component {
   componentDidMount() {
     BooksAPI.getAll()
 	  .then((books) => {
-    	this.setState(() => {
-//          console.log(books: books)
-          return {
+    	this.setState(() => ({
           	books
-        }})
+        }))
       })
+  }
+  
+{//TODO: Add this as prop to BookShelf to get new shelf from BookItem 
+  // and then we can update the shelves and rerender them
+}
+  updateShelf = (shelf) => {
+    console.log(shelf)
+    this.setState((oldBook) => {
+		const a = oldBook
+        a.shelf = shelf
+      	return {book: a }
+    })
   }
   
 
@@ -84,9 +94,9 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>         
-         		<BookShelf books={currentBooks} name='Currently Reading'/>
-         		<BookShelf books={wantBooks} name='Want to Read'/>
-         		<BookShelf books={readBooks} name='Read'/>
+         		<BookShelf books={currentBooks} shelfName='Currently Reading'/>
+         		<BookShelf books={wantBooks} shelfName='Want to Read'/>
+         		<BookShelf books={readBooks} shelfName='Read'/>
               </div>
             </div>
             <div className="open-search">
