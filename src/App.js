@@ -4,6 +4,7 @@ import './App.css'
 import {Link, Route} from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import BookShelf from './BookShelf'
+import SearchResult from './search/SearchResult'
 
 class BooksApp extends React.Component {
   
@@ -16,7 +17,9 @@ class BooksApp extends React.Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
     showSearchPage: false,
-    books: []
+    books: [],
+    query: '',
+    searchResults: []
   }
 
 
@@ -47,6 +50,53 @@ class BooksApp extends React.Component {
   }
   
 
+  updateQuery = (query) => {
+
+    console.log("current correct query: ", query )
+
+  	this.setState(() => ({
+      query: query.trim()
+    }))
+    
+    if (query.length === 0) {
+      console.log("No search results")
+
+	  this.setState(() => ({
+        searchResults: []
+      }))
+    } else {
+      console.log("BooksAPI Query")
+
+      BooksAPI.search(query)
+      .then((searchResults) => {
+        console.log("current searchResults: ", searchResults )
+        console.log("current aba query: ", query )
+        console.log("current aba this.state.query: ", this.state.query )
+
+        if (this.state.query === query) {
+          if (Array.isArray(searchResults)) {
+            console.log("searchResults is array " )
+			
+            this.setState(() => ({
+                searchResults: searchResults.filter((book) => {
+                  return book.hasOwnProperty('imageLinks') && book['imageLinks'].hasOwnProperty('thumbnail')
+            	})
+            }))  
+
+          } else { // Results is object with error message
+              console.log("searchResults is not array " )
+
+              this.setState(() => ({
+                searchResults: []
+              }))   
+          }   
+        
+        }                  
+      })
+    }
+  }
+
+
   render() {
     
     const currentBooks = this.state.books.filter((book) => (
@@ -74,24 +124,31 @@ class BooksApp extends React.Component {
        			to='/'
        			className="close-search"> Close
        		  </Link>
-              <div className="search-books-input-wrapper">
-                {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
-                <input type="text" placeholder="Search by title or author"/>
+      
+              <div className="search-books-input-wrapper"> 
+      
+      {JSON.stringify(this.state.query)}
+      
+<input 
+      			  type="text" 
+      			  placeholder="Search by title or author"
+      			  value={this.state.query}
+				  onChange={(e)=> this.updateQuery(e.target.value)}
+      			/>
 
               </div>
             </div>
             <div className="search-books-results">
-              <ol className="books-grid"></ol>
+              <ol className="books-grid">
+				{this.state.searchResults.map((book) => (
+				  <SearchResult key={book.id} book={book}/>
+                ))}
+			  </ol>
             </div>
           </div>
         )} />
+
+
 
 
 
