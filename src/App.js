@@ -1,13 +1,14 @@
-import React from 'react'
+import React, { Component } from 'react'
 // import * as BooksAPI from './BooksAPI'
 import './App.css'
-import {Link, Route} from 'react-router-dom'
+import { Route} from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
-import BookShelf from './BookShelf'
 //import SearchResult from './search/SearchResult'
-import BookItem from './BookItem'
+//import BookItem from './BookItem'
+import SearchPage from './SearchPage'
+import BookCase from './BookCase'
 
-class BooksApp extends React.Component {
+class BooksApp extends Component {
   
   
   state = {
@@ -53,7 +54,7 @@ class BooksApp extends React.Component {
 
   updateQuery = (query) => {
 
-    console.log("current correct query: ", query )
+    console.log("current correct query: '" + query + "'" )
  	
     if (query.length === 1) {
 	  query = query.trim()
@@ -109,77 +110,17 @@ class BooksApp extends React.Component {
 
   render() {
     
-    const currentBooks = this.state.books.filter((book) => (
-      book.shelf === 'currentlyReading'
-    ))
-
-    const wantBooks = this.state.books.filter((book) => (
-      book.shelf === 'wantToRead'
-    ))
-
-    const readBooks = this.state.books.filter((book) => (
-      book.shelf === 'read'
-    ))
-
     console.log('this.state.books: ', this.state.books)
 
     return (
       <div className="app">
-       <Route exact path='/search' render={() => (
-          
-         <div className="search-books">
-            <div className="search-books-bar">
-       		  <Link
-       			to='/'
-       			className="close-search"> Close
-       		  </Link>
-      
-              <div className="search-books-input-wrapper"> 
-				<input 
-      			  type="text" 
-      			  placeholder="Search by title or author"
-      			  value={this.state.query}
-				  onChange={(e)=> this.updateQuery(e.target.value)}
-      			/>
-
-              </div>
-            </div>
-            <div className="search-books-results">
-              <ol className="books-grid">
-				{this.state.searchResults.map((book) => (
-				  
-              	  <BookItem key={book.id} book={book} onMovedShelf={this.updateShelf}/>
-
-                ))}
-			  </ol>
-            </div>
-          </div>
+       <Route exact path='/search' render={() => ( 
+          <BookCase query={this.state.query} searchResults={this.state.searchResults} updateQuery={this.updateQuery} />
         )} />
-
-
-
-
 
        <Route exact path='/' render={() => (
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
-            <div className="list-books-content">
-              <div>         
-         		<BookShelf books={currentBooks} shelfName='Currently Reading' onMovedShelf={this.updateShelf}/>
-         		<BookShelf books={wantBooks} shelfName='Want to Read' onMovedShelf={this.updateShelf}/>
-         		<BookShelf books={readBooks} shelfName='Read' onMovedShelf={this.updateShelf}/>
-              </div>
-            </div>
-            <div className="open-search">
-				<Link
-					to='/search'>Add a book
-				</Link>
-            </div>
-          </div>
+         <SearchPage books={this.state.books} updateShelf={this.updateShelf} />
         )} />
-
       </div>
     )
   }
