@@ -17,13 +17,10 @@ class BookItem extends Component {
   
   updateShelf = (shelf) => {
     console.log('Book item:', shelf)
-        console.log('Book item protops:',     this.props)
-
+    console.log('Book item protops:', this.props)
     this.props.onMovedShelf(this.state.book, shelf)
   }
   
-
-
   render() {
         
   	const shelves = ['currentlyReading', 'wantToRead', 'read', 'none']
@@ -36,18 +33,20 @@ class BookItem extends Component {
       <li key={this.state.book.id}>
         <div className="book">
           <div className="book-top">
-            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${this.state.book['imageLinks']['thumbnail']}")` }}></div>
+            <div className="book-cover" style={{ width: 128, 
+                                               height: 193, 
+                                               backgroundImage: `url("${this.state.book['imageLinks']['thumbnail']}")` }}>
+
+			</div>
             <div className="book-shelf-changer">
 
-            <select value={this.state.book.shelf} onChange={(e) => this.updateShelf(e.target.value)}>
+              <select value={this.state.book.shelf} onChange={(e) => this.updateShelf(e.target.value)}>
 
-              <option value="move" disabled>Move to...</option>
-              {shelves.map((shelf) => (
-                <option key={shelf} value={shelf}>{shelvesDict[shelf]}</option>
-              ))}
-            </select>
-{//<OptionSelected key={this.state.book.shelf} shelfTitle={this.state.book.shelf} />
-}
+              	<option value="move" disabled>Move to...</option>
+              	{shelves.map((shelf) => (
+                  <option key={shelf} value={shelf}>{shelvesDict[shelf]}</option>
+              	))}
+              </select>
             </div>
           </div>
           <div className="book-title">{this.state.book.title}</div>

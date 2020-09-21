@@ -30,9 +30,6 @@ class SearchResult extends Component {
 
             <div className="book-shelf-changer">
 
-{    console.log('Book name:', this.state.book.title, ' Book shelf: ', this.state.book.shelf)
-
-}
             <select value={this.state.book.shelf} >
 
               <option value="move" disabled>Move to...</option>

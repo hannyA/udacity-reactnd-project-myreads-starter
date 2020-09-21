@@ -4,7 +4,7 @@ import './App.css'
 import {Link, Route} from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import BookShelf from './BookShelf'
-import SearchResult from './search/SearchResult'
+//import SearchResult from './search/SearchResult'
 import BookItem from './BookItem'
 
 class BooksApp extends React.Component {
@@ -17,7 +17,7 @@ class BooksApp extends React.Component {
      * users can use the browser's back and forward buttons to navigate between
      * pages, as well as provide a good URL they can bookmark and share.
      */
-    showSearchPage: false,
+    //showSearchPage: false,
     books: [],
     query: '',
     searchResults: []
@@ -135,7 +135,6 @@ class BooksApp extends React.Component {
        		  </Link>
       
               <div className="search-books-input-wrapper"> 
-            
 				<input 
       			  type="text" 
       			  placeholder="Search by title or author"
