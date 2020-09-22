@@ -2,34 +2,13 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 
 class BookItem extends Component {
-  
 
-  constructor(props) {
-    console.log('Book item constructor protops:', props)
-  	super(props)
-  }
-
-  /*
-  state = {
-    book: {}
-  }
-
-  componentDidMount() {
-    console.log('componentDidMount this.props.book:')
-    console.log('componentDidMount this.props.book:', this.props.book)
-
-    this.setState({
-  	  book: this.props.book
-  })}
-*/
-  //TODO: Replace this in App.js
-  
   updateShelf = (shelf, book) => {
     this.props.onMovedShelf(book, shelf)
   }
 
   
-   shelvesDict = {currentlyReading: 'Currently Reading',
+  shelvesDict = {currentlyReading: 'Currently Reading',
                      wantToRead: 'Want to Read', 
                      read: 'Read',
                      none: 'None'}
