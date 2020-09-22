@@ -53,8 +53,6 @@ class BooksApp extends Component {
   
 
   updateQuery = (query) => {
-
-    console.log("current correct query: '" + query + "'" )
  	
     if (query.length === 1) {
 	  query = query.trim()
@@ -65,21 +63,16 @@ class BooksApp extends Component {
     }))
     
     if (query.length === 0) {
-      console.log("No search results")
-
 	  this.setState(() => ({
         searchResults: []
       }))
     } else {
-      console.log("BooksAPI Query")
 
       BooksAPI.search(query)
       .then((searchResults) => {
 
         if (this.state.query === query) {
-          if (Array.isArray(searchResults)) {
-            console.log("searchResults is array " )
-			
+          if (Array.isArray(searchResults)) {			
             const filteredBooks = searchResults.filter((book) => (
                 	book.hasOwnProperty('imageLinks') && book['imageLinks'].hasOwnProperty('thumbnail')
             	)).map((resultBook) => {
@@ -110,17 +103,19 @@ class BooksApp extends Component {
 
   render() {
     
-    console.log('this.state.books: ', this.state.books)
-
     return (
       <div className="app">
        <Route exact path='/search' render={() => ( 
-          <BookCase query={this.state.query} searchResults={this.state.searchResults} updateQuery={this.updateQuery} />
+         <SearchPage query={this.state.query} 
+					 searchResults={this.state.searchResults} 
+					 updateQuery={this.updateQuery}
+					 updateShelf={this.updateShelf}/>
         )} />
 
        <Route exact path='/' render={() => (
-         <SearchPage books={this.state.books} updateShelf={this.updateShelf} />
-        )} />
+         <BookCase books={this.state.books} 
+				   updateShelf={this.updateShelf} />
+		)} />
       </div>
     )
   }

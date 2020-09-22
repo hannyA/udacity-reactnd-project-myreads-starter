@@ -25,8 +25,6 @@ class BookItem extends Component {
   //TODO: Replace this in App.js
   
   updateShelf = (shelf, book) => {
-    console.log('Book item:', shelf)
-    console.log('Book item protops:', this.props)
     this.props.onMovedShelf(book, shelf)
   }
 
@@ -39,7 +37,7 @@ class BookItem extends Component {
   render() {
         
     const { book } = this.props
-       
+
     return (
       <li key={book.id}>
         <div className="book">
