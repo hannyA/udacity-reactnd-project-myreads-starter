@@ -10,12 +10,11 @@ import BookCase from './BookCase'
 
 class BooksApp extends Component {
   
-  
   state = {
     books: []
   }
 
-
+	// Get all books from server after components loads.
   componentDidMount() {
     console.log("Component Did mount")
     BooksAPI.getAll()
@@ -26,13 +25,10 @@ class BooksApp extends Component {
       })
   }
   
-//TODO: Add this as prop to BookShelf to get new shelf from BookItem 
-  // and then we can update the shelves and rerender them
-
+  // Move book to new shelf and update it on server
   updateShelf = (movedBook, shelf) => {
-    console.log('Update shelf called')
   	movedBook.shelf = shelf
-
+    
     this.setState((currentState) => ({      
       books: [...currentState.books.filter((book) => book.id !== movedBook.id), movedBook]      
     }))
@@ -42,14 +38,10 @@ class BooksApp extends Component {
  
 
   render() {
-    
     return (
       <div className="app">
        <Route exact path='/search' render={() => ( 
          <SearchPage books={this.state.books}
-    				 //query={this.state.query} 
-					 //searchResults={this.state.searchResults} 
-					 //updateQuery={this.updateQuery}
 					 updateShelf={this.updateShelf}/>
         )} />
 

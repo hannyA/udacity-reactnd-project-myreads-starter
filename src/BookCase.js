@@ -3,8 +3,8 @@ import BookShelf from './BookShelf'
 import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
 
+// Main webpage that shows user all books that they
 class BookCase extends Component {
-
  
   render() {
 

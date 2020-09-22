@@ -13,7 +13,7 @@ class SearchPage extends Component {
     searchResults: []
   }
 
- 
+ 	//Updatequery updates the query and search results 
   updateQuery = (query) => {
  	
     if (query.length === 1) {
@@ -38,9 +38,11 @@ class SearchPage extends Component {
             const filteredBooks = searchResults.filter((book) => (
                 	book.hasOwnProperty('imageLinks') && book['imageLinks'].hasOwnProperty('thumbnail')
             	)).map((resultBook) => {
-	              const ownedBook = this.props.books.filter((book) => book.id === resultBook.id)
-            	  if (ownedBook.length > 0) {
-                  	resultBook.shelf = ownedBook[0].shelf
+	              
+          		  const ownedBook = this.props.books.filter((book) => book.id === resultBook.id)
+            
+		          if (ownedBook.length > 0) {
+                    resultBook.shelf = ownedBook[0].shelf
                   } else {
                   	resultBook.shelf = 'none'
                   }
@@ -63,10 +65,9 @@ class SearchPage extends Component {
   }
 
   render() {
-//    const {searchResults, query, updateQuery, updateShelf} = this.props
-        const { updateShelf} = this.props
-    return (
-      
+    const { updateShelf} = this.props
+    
+	return (  
       <div className="search-books">
         <div className="search-books-bar">
           <Link
