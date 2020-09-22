@@ -12,16 +12,7 @@ class BooksApp extends Component {
   
   
   state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
-    //showSearchPage: false,
-    books: [],
-    query: '',
-    searchResults: []
+    books: []
   }
 
 
@@ -46,69 +37,19 @@ class BooksApp extends Component {
       books: [...currentState.books.filter((book) => book.id !== movedBook.id), movedBook]      
     }))
     
-    BooksAPI.update(movedBook, shelf)
-//    .then(() => ({}))
+    BooksAPI.update(movedBook, shelf) 
+  }
  
-  }
-  
-
-  updateQuery = (query) => {
- 	
-    if (query.length === 1) {
-	  query = query.trim()
-    }
-    
-  	this.setState(() => ({
-      query: query
-    }))
-    
-    if (query.length === 0) {
-	  this.setState(() => ({
-        searchResults: []
-      }))
-    } else {
-
-      BooksAPI.search(query)
-      .then((searchResults) => {
-
-        if (this.state.query === query) {
-          if (Array.isArray(searchResults)) {			
-            const filteredBooks = searchResults.filter((book) => (
-                	book.hasOwnProperty('imageLinks') && book['imageLinks'].hasOwnProperty('thumbnail')
-            	)).map((resultBook) => {
-	              const ownedBook = this.state.books.filter((book) => book.id === resultBook.id)
-            	  if (ownedBook.length > 0) {
-                  	resultBook.shelf = ownedBook[0].shelf
-                  } else {
-                  	resultBook.shelf = 'none'
-                  }
-                  return resultBook
-            	})
-            this.setState(() => ({
-                searchResults: filteredBooks
-            }))  
-
-          } else { // Results is object with error message
-              console.log("searchResults is not array " )
-
-              this.setState(() => ({
-                searchResults: []
-              }))   
-          }   
-        }                  
-      })
-    }
-  }
-
 
   render() {
     
     return (
       <div className="app">
        <Route exact path='/search' render={() => ( 
-         <SearchPage query={this.state.query} 
-					 searchResults={this.state.searchResults} 
-					 updateQuery={this.updateQuery}
+         <SearchPage books={this.state.books}
+    				 //query={this.state.query} 
+					 //searchResults={this.state.searchResults} 
+					 //updateQuery={this.updateQuery}
 					 updateShelf={this.updateShelf}/>
         )} />
 
