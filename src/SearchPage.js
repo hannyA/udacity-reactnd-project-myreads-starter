@@ -95,7 +95,7 @@ class SearchPage extends Component {
 }
 
 SearchPage.propTypes = {
-  updateShelf: PropTypes.string.isRequired,
+  updateShelf: PropTypes.func.isRequired,
   books: PropTypes.array.isRequired
 }
 
